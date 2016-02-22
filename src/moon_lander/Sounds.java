@@ -1,37 +1,43 @@
 package moon_lander;
 
-import java.io.*;
+import java.io.IOException;
 import java.net.URL;
-import java.util.concurrent.TimeUnit;
 
-import javax.sound.sampled.*;
-import javax.swing.*;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
-// To play sound using Clip, the process need to be alive.
-// Hence, we use a Swing application.
-public class APlay extends JFrame {
+public class Sounds {
+	// To play sound using Clip, the process need to be alive.
+	// Hence, we use a Swing application.
+
 	// available sounds
 	public final int SOUND_CRASH = 1; // crash sound flag
 	// add more sound flags here
 
-	/* Constructor
-	 * it is passed a sound flag
-	 * it will play that sound
-	 * there is only one currently supported.
-	 * To use this sound - call new APlay(SOUND);
+	/* Constructor */
+	public  Sounds() {
+			
+		}
+
+	/*
+	 * Method is passed a sound flag it will play that sound there is only one
+	 * currently supported. To use this sound - call new APlay(SOUND);
 	 */
-	public APlay(int soundRequired) {
+	public void playit(int soundRequired) {
 		URL url;
 		String soundFile = null;
-		
+
 		switch (soundRequired) {
 		case SOUND_CRASH:
 			soundFile = "moon_lander/resouces/sounds/drawing.wav";
 			break;
-			
-		default :
+
+		default:
 			break;
-			
+
 		}
 
 		// Go for it!

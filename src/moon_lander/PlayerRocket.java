@@ -196,6 +196,8 @@ public class PlayerRocket {
         else if(crashed)
         {
             g2d.drawImage(rocketCrashedImg, x, y + rocketImgHeight - rocketCrashedImg.getHeight(), null);
+            Sounds so = new Sounds();
+            so.playit(1);
         }
         // If the rocket is still in the space.
         else
