@@ -4,12 +4,19 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 /**
  * The space rocket with which player will have to land.
@@ -19,6 +26,8 @@ import javax.imageio.ImageIO;
 
 public class PlayerRocket {
     
+	private final int SOUND_CRASH = 1; // crash sound flag
+	
     /**
      * We use this to generate a random number for starting x coordinate of the rocket.
      */
@@ -91,6 +100,8 @@ public class PlayerRocket {
      * Height of rocket.
      */
     public int rocketImgHeight;
+    
+    private boolean soundPlayed = false;
     
     
     public PlayerRocket()
@@ -196,8 +207,11 @@ public class PlayerRocket {
         else if(crashed)
         {
             g2d.drawImage(rocketCrashedImg, x, y + rocketImgHeight - rocketCrashedImg.getHeight(), null);
-            Sounds so = new Sounds();
-            so.playit(1);
+            if (soundPlayed == false) {
+            	this.playit(SOUND_CRASH);
+            	soundPlayed = true;
+            }
+            
         }
         // If the rocket is still in the space.
         else
@@ -208,5 +222,47 @@ public class PlayerRocket {
             g2d.drawImage(rocketImg, x, y, null);
         }
     }
+    
+    /*
+	 * Method is passed a sound flag it will play that sound there is only one
+	 * currently supported. To use this sound - call new APlay(SOUND);
+	 */
+	public void playit(int soundRequired) {
+		URL url;
+		String soundFile = null;
+		String fn = null;
+		File sound; 
+
+		switch (soundRequired) {
+		case SOUND_CRASH:
+			fn = "./src/moon_lander/resources/sounds/drawing.wav";
+			break;
+
+		default:
+			break;
+
+		}
+
+		// Go for it!
+		try {
+			// Open an audio input stream.
+			sound = new File(fn);
+			AudioInputStream audioIn = AudioSystem.getAudioInputStream(sound);
+			Clip clip = AudioSystem.getClip();
+			// Open audio clip and load samples from the audio input stream.
+			clip.open(audioIn);
+			clip.start();
+			// plays
+		} catch (UnsupportedAudioFileException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (LineUnavailableException e) {
+			e.printStackTrace();
+		} catch (Throwable e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
     
 }
