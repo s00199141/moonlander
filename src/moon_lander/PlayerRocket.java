@@ -171,19 +171,19 @@ public class PlayerRocket {
     public void Update()
     {
         // Calculating speed for moving up or down.
-        if(Canvas.keyboardKeyState(KeyEvent.VK_W))
+        if(Canvas.keyboardKeyState(KeyEvent.VK_UP))
             speedY -= speedAccelerating;
         else
             speedY += speedStopping;
         
         // Calculating speed for moving or stopping to the left.
-        if(Canvas.keyboardKeyState(KeyEvent.VK_A))
+        if(Canvas.keyboardKeyState(KeyEvent.VK_LEFT))
             speedX -= speedAccelerating;
         else if(speedX < 0)
             speedX += speedStopping;
         
         // Calculating speed for moving or stopping to the right.
-        if(Canvas.keyboardKeyState(KeyEvent.VK_D))
+        if(Canvas.keyboardKeyState(KeyEvent.VK_RIGHT))
             speedX += speedAccelerating;
         else if(speedX > 0)
             speedX -= speedStopping;
