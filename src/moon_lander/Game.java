@@ -39,7 +39,7 @@ public class Game {
     private BufferedImage redBorderImg;
     
 
-    public Game()
+    public Game(int level)
     {
         Framework.gameState = Framework.GameState.GAME_CONTENT_LOADING;
         
@@ -47,7 +47,7 @@ public class Game {
             @Override
             public void run(){
                 // Sets variables and objects for the game.
-                Initialize();
+                Initialize(level);
                 // Load game files (images, sounds, ...)
                 LoadContent();
                 
@@ -60,10 +60,12 @@ public class Game {
     
    /**
      * Set variables and objects for the game.
-     */
-    private void Initialize()
+    @param level
+     */ 
+    private void Initialize(int level)
     {
         playerRocket = new PlayerRocket();
+        playerRocket.setLevelOfDifficulty(level);
         landingArea  = new LandingArea();
     }
     

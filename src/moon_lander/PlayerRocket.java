@@ -27,7 +27,8 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 public class PlayerRocket {
     
 	private final int SOUND_CRASH = 1; // crash sound flag
-	
+	private final int SOUND_LANDED = 2; // landed sound flag
+	private final int SOUND_ROCKET_FIRE = 3; // rocket_fire sound flag
     /**
      * We use this to generate a random number for starting x coordinate of the rocket.
      */
@@ -103,6 +104,13 @@ public class PlayerRocket {
     
     private boolean soundPlayed = false;
     
+    private int levelOfDifficulty = 2;
+
+    public void setLevelOfDifficulty(int level) {
+        this.levelOfDifficulty = level;
+    }
+
+    
     
     public PlayerRocket()
     {
@@ -120,11 +128,22 @@ public class PlayerRocket {
         
         ResetPlayer();
         
-        speedAccelerating = 2;
-        speedStopping = 1;
-        
-        topLandingSpeed = 5;
+      
+        if (this.levelOfDifficulty == 1) {
+            speedAccelerating = 1;
+            speedStopping = 1;
+            topLandingSpeed = 8;
+        } else if (this.levelOfDifficulty == 2) {
+            speedAccelerating = 3;
+            speedStopping = 1;
+            topLandingSpeed = 5;
+        } else {
+            speedAccelerating = 5;
+            speedStopping = 2;
+            topLandingSpeed = 2;
+        }
     }
+
     
     private void LoadContent()
     {
@@ -202,26 +221,35 @@ public class PlayerRocket {
         if(landed)
         {
             g2d.drawImage(rocketLandedImg, x, y, null);
-        }
+            	this.playit(SOUND_LANDED);
+            	soundPlayed = true;
+            }
+            
+        
         // If the rocket is crashed.
         else if(crashed)
         {
             g2d.drawImage(rocketCrashedImg, x, y + rocketImgHeight - rocketCrashedImg.getHeight(), null);
-            if (soundPlayed == false) {
             	this.playit(SOUND_CRASH);
             	soundPlayed = true;
             }
             
-        }
+        
         // If the rocket is still in the space.
         else
         {
-            // If player hold down a W key we draw rocket fire.
-            if(Canvas.keyboardKeyState(KeyEvent.VK_W))
+            // If player hold down a UP key we draw rocket fire.
+            if(Canvas.keyboardKeyState(KeyEvent.VK_UP)) {
                 g2d.drawImage(rocketFireImg, x + 12, y + 66, null);
+                if (soundPlayed == false) {
+                	this.playit(SOUND_ROCKET_FIRE);
+                	soundPlayed = true;
+                }
+            }
             g2d.drawImage(rocketImg, x, y, null);
         }
-    }
+      }
+    
     
     /*
 	 * Method is passed a sound flag it will play that sound there is only one
@@ -235,9 +263,14 @@ public class PlayerRocket {
 
 		switch (soundRequired) {
 		case SOUND_CRASH:
-			fn = "./src/moon_lander/resources/sounds/drawing.wav";
+			fn = "./src/moon_lander/resources/sounds/crash.wav";
 			break;
-
+		case SOUND_LANDED:
+			fn = "./src/moon_lander/resources/sounds/clapping.wav";
+			break;
+		case SOUND_ROCKET_FIRE:
+			fn = "./src/moon_lander/resources/sounds/rocket_fire.wav";
+			break;
 		default:
 			break;
 

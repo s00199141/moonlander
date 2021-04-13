@@ -218,8 +218,8 @@ public class Framework extends Canvas {
             case MAIN_MENU:
                 g2d.drawImage(moonLanderMenuImg, 0, 0, frameWidth, frameHeight, null);
                 g2d.setColor(Color.white);
-                g2d.drawString("Use Up Left Down arrows to controle the rocket.", frameWidth / 2 - 117, frameHeight / 2);
-                g2d.drawString("Press any key to start the game.", frameWidth / 2 - 100, frameHeight / 2 + 30);
+                g2d.drawString("Use Up Left Down arrows to control the rocket.", frameWidth / 2 - 117, frameHeight / 2);
+                g2d.drawString("Press 1,2 or 3 for the diffuclty level.",  frameWidth / 2 - 83, frameHeight / 2 + 60);
                 g2d.drawString("WWW.GAMETUTORIAL.NET", 7, frameHeight - 5);
             break;
             case OPTIONS:
@@ -235,13 +235,14 @@ public class Framework extends Canvas {
     /**
      * Starts new game.
      */
-    private void newGame()
+   
+    private void newGame(int level)
     {
         // We set gameTime to zero and lastTime to current time for later calculations.
         gameTime = 0;
         lastTime = System.nanoTime();
         
-        game = new Game();
+        game = new Game(level);
     }
     
     /**
@@ -293,9 +294,20 @@ public class Framework extends Canvas {
         switch (gameState)
         {
             case MAIN_MENU:
-                newGame();
+             int level = 2; // default
+             if (e.getKeyCode() == KeyEvent.VK_1) {
+            	 level = 1;
+             }
+             else if (e.getKeyCode() == KeyEvent.VK_2) {
+            	 level = 2;
+             }
+             else if (e.getKeyCode() == KeyEvent.VK_3) {
+            	 level = 3;
+             }
+                newGame(level);
             break;
             case GAMEOVER:
+            	
                 if(e.getKeyCode() == KeyEvent.VK_SPACE || e.getKeyCode() == KeyEvent.VK_ENTER)
                     restartGame();
             break;
